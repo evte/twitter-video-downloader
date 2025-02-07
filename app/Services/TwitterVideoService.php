@@ -49,12 +49,19 @@ class TwitterVideoService
             ->sortByDesc('bit_rate')
             ->values();
 
+        // 只保留最高和最低清晰度
+        $qualities = collect([
+            $variants->first(),  // 最高清晰度
+            $variants->last()    // 最低清晰度
+        ])->filter()  // 移除空值
+        ->map(fn ($variant) => [
+            'url' => $variant['url'],
+            'resolution' => $this->formatBitrate($variant['bit_rate']),
+            'bitrate' => $variant['bit_rate']
+        ])->values()->toArray();
+
         return [
-            'qualities' => $variants->map(fn ($variant) => [
-                'url' => $variant['url'],
-                'resolution' => $this->formatBitrate($variant['bit_rate']),
-                'bitrate' => $variant['bit_rate']  // 保留原始比特率用于排序
-            ])->toArray()
+            'qualities' => $qualities
         ];
     }
 

@@ -281,10 +281,14 @@
                                 downloadLink.click();
                                 document.body.removeChild(downloadLink);
                                 this.downloading = false;
-                                this.showToast('下载开始', 'success');
+                                this.showToast(`下载开始`, 'success');
                             } else if (data.status === 'failed') {
                                 this.error = '下载失败，请重试';
-                                this.showToast('下载失败', 'error');
+                                if (data.code == 429 ) {
+                                    this.showToast(data.error, 'error');
+                                } else {
+                                    this.showToast('下载失败', 'error');
+                                }
                                 this.downloading = false;
                             } else {
                                 setTimeout(checkStatus, 1000);

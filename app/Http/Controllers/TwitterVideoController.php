@@ -8,6 +8,8 @@ use App\Jobs\ProcessVideoDownload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Models\IpDownload;
+use Carbon\Carbon;
 
 class TwitterVideoController extends Controller
 {
@@ -46,19 +48,35 @@ class TwitterVideoController extends Controller
 
     public function download(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'video_url' => 'required|url',
-            'resolution' => 'required|string',
-            'tweet_url' => 'required|url'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => '无效的请求参数'
-            ], 422);
-        }
-
         try {
+            // 检查 IP 下载次数
+            $ipAddress = $request->ip();
+            $today = Carbon::today();
+            
+            $ipDownload = IpDownload::firstOrCreate(
+                ['ip_address' => $ipAddress, 'date' => $today],
+                ['download_count' => 0]
+            );
+
+            if ($ipDownload->download_count >= 3) {
+                return response()->json([
+                    'error' => '您今日的下载次数已达上限（3次/天）'
+                ], 429);
+            }
+
+            // 验证请求参数
+            $validator = Validator::make($request->all(), [
+                'video_url' => 'required|url',
+                'resolution' => 'required|string',
+                'tweet_url' => 'required|url'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => '无效的请求参数'
+                ], 422);
+            }
+
             $download = VideoDownload::create([
                 'tweet_url' => $request->tweet_url,
                 'video_url' => $request->video_url,
@@ -66,11 +84,15 @@ class TwitterVideoController extends Controller
                 'status' => 'pending'
             ]);
 
+            // 增加下载计数
+            $ipDownload->increment('download_count');
+
             ProcessVideoDownload::dispatch($download);
 
             return response()->json([
                 'message' => '下载已开始处理',
-                'download_id' => $download->id
+                'download_id' => $download->id,
+                'remaining_downloads' => 3 - $ipDownload->download_count
             ]);
         } catch (\Exception $e) {
             return response()->json([
