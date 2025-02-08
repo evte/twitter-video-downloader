@@ -16,3 +16,11 @@ Route::prefix('api/twitter')->group(function () {
     Route::get('/status/{id}', [TwitterVideoController::class, 'status']);
 });
 
+Route::get('/terms', function () {
+    return view('terms');
+});
+
+Route::get('/privacy', function () {
+    return view('privacy');
+});
+

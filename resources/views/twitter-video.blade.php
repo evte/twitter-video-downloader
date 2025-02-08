@@ -6,6 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>推特视频下载器</title>
     
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4401835193811442"
+     crossorigin="anonymous"></script>
+    
     <!-- 网站图标 -->
     <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
@@ -157,11 +161,61 @@
             </transition>
         </div>
 
-        <!-- 页脚 -->
-        <div class="mt-8 text-center text-gray-600 text-sm">
-            <p>支持 Twitter/X 平台视频下载</p>
-        </div>
+        <!-- 主要内容结束 -->
     </div>
+
+    <!-- 固定的页脚 -->
+    <footer class="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-sm border-t border-gray-200 shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="text-center">
+                <!-- Disclaimer -->
+                <div class="max-w-2xl mx-auto mb-3">
+                    <p class="text-xs text-red-500 font-medium mb-1">Disclaimer</p>
+                    <p class="text-xs text-gray-600 leading-relaxed">
+                        This tool is provided for legitimate content downloading only. We do not review, host, or store any downloaded content. 
+                        Users are solely responsible for ensuring they have the right to download content and must not use this service for any illegal purposes. 
+                        Any misuse of this tool is strictly prohibited.
+                    </p>
+                </div>
+
+                <p class="text-gray-600 text-sm font-medium mb-3">
+                    Support Twitter/X platform video downloads
+                </p>
+                
+                <!-- Policy Links -->
+                <div class="flex justify-center space-x-6 text-sm mb-3">
+                    <a href="/terms" class="text-blue-500 hover:text-blue-600 transition-colors duration-200 hover:underline">
+                        Terms of Service
+                    </a>
+                    <span class="text-gray-300">|</span>
+                    <a href="/privacy" class="text-blue-500 hover:text-blue-600 transition-colors duration-200 hover:underline">
+                        Privacy Policy
+                    </a>
+                    <span class="text-gray-300">|</span>
+                    <a href="/ads.txt" class="text-blue-500 hover:text-blue-600 transition-colors duration-200 hover:underline">
+                        Advertising Policy
+                    </a>
+                </div>
+                
+                <!-- Google Ads Statement -->
+                <div class="max-w-2xl mx-auto">
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        This website uses Google AdSense for advertising. Google and its certified vendors may use cookies to serve ads 
+                        based on your past visits to this and other websites.
+                        <a href="https://policies.google.com/technologies/ads" 
+                           class="text-blue-500 hover:text-blue-600 transition-colors duration-200 hover:underline ml-1" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            Manage ad preferences
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 为固定页脚添加底部间距 -->
+    <div class="pb-48"></div>
 
     <script>
         const { createApp } = Vue
