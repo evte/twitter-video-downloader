@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TwitterVideoController;
+use App\Http\Controllers\DeepSeekController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,4 +24,8 @@ Route::get('/terms', function () {
 Route::get('/privacy', function () {
     return view('privacy');
 });
+
+Route::get('/deepseek', [DeepSeekController::class, 'index'])->name('deepseek.index');
+Route::post('/api/deepseek/process', [DeepSeekController::class, 'process'])->name('deepseek.process');
+Route::post('/api/deepseek/clear-context', [DeepSeekController::class, 'clearContext'])->name('deepseek.clearContext');
 

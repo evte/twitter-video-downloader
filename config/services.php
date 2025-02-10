@@ -38,5 +38,7 @@ return [
     'twitter' => [
         'bearer_token' => env('bearer_token'),
     ],
-
+    'dashscope' => [
+        'api_key' => env('DASH_SCOPE_API_KEY', 'sk-133d0de6eee5488a9e82f52452546fb1'),
+    ],
 ];
